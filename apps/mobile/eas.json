@@ -8,7 +8,10 @@
       "distribution": "internal"
     },
     "production": {
-      "autoIncrement": true
+      "autoIncrement": true,
+      "env": {
+        "API_BASE_URL": "https://hospice-app-8zdg.onrender.com"
+      }
     }
   },
   "cli": {
