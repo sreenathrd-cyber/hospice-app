@@ -29,6 +29,7 @@ const config: ExpoConfig = {
   experiments: { typedRoutes: true },
   extra: {
     apiBaseUrl: process.env.API_BASE_URL ?? "http://localhost:3001",
+    eas: { projectId: "45cf1be5-7921-452c-9e33-2dbfaaac666a" },
   },
 };
 
