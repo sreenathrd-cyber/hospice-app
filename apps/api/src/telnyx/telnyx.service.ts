@@ -12,14 +12,14 @@ import type { SmsSendRequest } from "@repo/types";
  */
 const TELNYX_BASE = "https://api.telnyx.com/v2";
 const MESSAGES_PATH = "/messages";
-const VIDEO_ROOMS_PATH = "/video/rooms";
+const VIDEO_ROOMS_PATH = "/rooms";
 /**
- * Per Telnyx API reference (Video Rooms → Generate Token). If Telnyx ever
- * returns 404 here, verify the path in the Telnyx portal docs — the service
- * surfaces Telnyx's error verbatim so the failure is loud, not silent.
+ * Per Telnyx's telnyx-meet reference implementation (pages/api/client_token.ts).
+ * NOTE: this is NOT /video/rooms — the Rooms API lives at /v2/rooms, and the
+ * client-token action is generate_join_client_token.
  */
 const videoRoomTokenPath = (roomId: string): string =>
-  `/video/rooms/${roomId}/actions/generate_token`;
+  `/rooms/${roomId}/actions/generate_join_client_token`;
 
 const telnyxMessageResponse = z.object({ data: z.object({ id: z.string() }) });
 const telnyxRoomResponse = z.object({ data: z.object({ id: z.string() }) });
@@ -94,7 +94,11 @@ export class TelnyxService {
    * is what the mobile/web client uses to join.
    */
   async createClientToken(roomId: string): Promise<{ token: string }> {
-    const result = await this.post(videoRoomTokenPath(roomId), {}, telnyxTokenResponse);
+    const result = await this.post(
+      videoRoomTokenPath(roomId),
+      { refresh_token_ttl_secs: 3600, token_ttl_secs: 60 },
+      telnyxTokenResponse,
+    );
     return { token: result.data.token };
   }
 }

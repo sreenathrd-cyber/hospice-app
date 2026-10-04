@@ -18,6 +18,7 @@ const config: ExpoConfig = {
     infoPlist: {
       NSCameraUsageDescription: "Video visits need camera access so your care team can see you.",
       NSMicrophoneUsageDescription: "Video visits need microphone access so your care team can hear you.",
+      ITSAppUsesNonExemptEncryption: false,
     },
   },
   android: {
