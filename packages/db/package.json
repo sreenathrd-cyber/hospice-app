@@ -1,7 +1,8 @@
 {
   "dependencies": {
     "drizzle-orm": "0.45.3",
-    "postgres": "3.4.5"
+    "postgres": "3.4.5",
+    "@repo/types": "workspace:*"
   },
   "devDependencies": {
     "drizzle-kit": "0.31.11"
