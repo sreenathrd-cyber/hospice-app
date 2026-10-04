@@ -52,7 +52,9 @@ export const users = pgTable("users", {
     .references(() => tenants.id),
   role: userRoleEnum("role").notNull(),
   displayName: text("display_name").notNull(),
-  phone: text("phone").notNull(),
+  phone: text("phone"),
+  email: text("email").unique(),
+  passwordHash: text("password_hash"),
   /** Expo push token for new-message notifications. Null until the device registers. */
   pushToken: text("push_token"),
   createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),

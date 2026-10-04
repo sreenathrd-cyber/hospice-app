@@ -9,10 +9,12 @@
     "dotenv": "^18.0.5",
     "reflect-metadata": "0.2.2",
     "rxjs": "7.8.2",
-    "zod": "4.6.5"
+    "zod": "4.6.5",
+    "bcryptjs": "^2.4.3"
   },
   "devDependencies": {
-    "tsx": "4.20.6"
+    "tsx": "4.20.6",
+    "@types/bcryptjs": "^2.4.6"
   },
   "name": "api",
   "private": true,

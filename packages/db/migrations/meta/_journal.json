@@ -71,6 +71,13 @@
       "when": 1791072906981,
       "tag": "0009_simple_sersi",
       "breakpoints": true
+    },
+    {
+      "idx": 10,
+      "version": "7",
+      "when": 1791158019522,
+      "tag": "0010_add-email-password",
+      "breakpoints": true
     }
   ]
 }

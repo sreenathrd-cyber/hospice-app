@@ -1,7 +1,9 @@
 import { Body, Controller, Post } from "@nestjs/common";
 import {
+  loginSchema,
   requestCodeSchema,
   verifyCodeSchema,
+  type Login,
   type RequestCode,
   type VerifyCode,
 } from "@repo/types";
@@ -10,7 +12,7 @@ import { AuthService } from "./auth.service.js";
 
 /**
  * Public by design — this IS the login. Every body is zod-validated;
- * nothing here reveals whether a phone number is registered.
+ * nothing here reveals whether a phone number or email is registered.
  */
 @Controller("auth")
 export class AuthController {
@@ -24,5 +26,10 @@ export class AuthController {
   @Post("verify-code")
   async verifyCode(@Body(new ZodValidationPipe(verifyCodeSchema)) body: VerifyCode) {
     return this.auth.verifyCode(body.phone, body.code);
+  }
+
+  @Post("login")
+  async login(@Body(new ZodValidationPipe(loginSchema)) body: Login) {
+    return this.auth.login(body.email, body.password);
   }
 }

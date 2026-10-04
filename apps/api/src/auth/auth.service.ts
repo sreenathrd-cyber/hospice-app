@@ -15,8 +15,10 @@ import {
 } from "@repo/db";
 import {
   AUTH_POLICY,
+  loginResponseSchema,
   requestCodeResponseSchema,
   verifyCodeResponseSchema,
+  type LoginResponse,
   type RequestCodeResponse,
   type VerifyCodeResponse,
 } from "@repo/types";
@@ -24,6 +26,7 @@ import { DB_CLIENT } from "../db/database.module.js";
 import { TelnyxService } from "../telnyx/telnyx.service.js";
 import { AuditService } from "../audit/audit.service.js";
 import { generateCode, generateToken, hashSecret, isExpired } from "./auth.logic.js";
+import * as bcrypt from "bcryptjs";
 
 /**
  * Phone-code auth. The agency registers phone numbers; users prove possession
@@ -132,6 +135,59 @@ export class AuthService {
     await this.audit.log(user.tenantId, user.id, "login", "user", user.id);
 
     return verifyCodeResponseSchema.parse({
+      token,
+      userId: user.id,
+      role: user.role,
+      tenantId: user.tenantId,
+      theme: toAgencyTheme(tenant),
+    });
+  }
+
+  /**
+   * Email/password login for web dashboard and mobile app.
+   * Returns the same session shape as verifyCode.
+   */
+  async login(email: string, password: string): Promise<LoginResponse> {
+    const normalizedEmail = email.toLowerCase().trim();
+    const user = await this.db.query.users.findFirst({
+      where: eq(users.email, normalizedEmail),
+    });
+
+    const invalid = {
+      code: "invalid_credentials",
+      message: "Email or password didn't match. Try again.",
+    } as const;
+
+    if (!user || !user.passwordHash) {
+      throw new UnauthorizedException(invalid);
+    }
+
+    const ok = await bcrypt.compare(password, user.passwordHash);
+    if (!ok) {
+      throw new UnauthorizedException(invalid);
+    }
+
+    const tenant = await this.db.query.tenants.findFirst({
+      where: eq(tenants.id, user.tenantId),
+    });
+    if (!tenant) {
+      throw new InternalServerErrorException({
+        code: "tenant_missing",
+        message: "Account configuration error",
+      });
+    }
+
+    const now = new Date();
+    const token = generateToken();
+    await this.db.insert(sessions).values({
+      tokenHash: hashSecret(token),
+      userId: user.id,
+      tenantId: user.tenantId,
+      expiresAt: new Date(now.getTime() + AUTH_POLICY.sessionTtlDays * 86_400_000),
+    });
+    await this.audit.log(user.tenantId, user.id, "login", "user", user.id);
+
+    return loginResponseSchema.parse({
       token,
       userId: user.id,
       role: user.role,

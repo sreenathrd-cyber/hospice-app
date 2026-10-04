@@ -38,6 +38,18 @@ export const verifyCodeResponseSchema = z.object({
 });
 export type VerifyCodeResponse = z.infer<typeof verifyCodeResponseSchema>;
 
+/**
+ * Email/password auth for web dashboard and mobile app.
+ */
+export const loginSchema = z.object({
+  email: z.string().email("must be a valid email"),
+  password: z.string().min(1, "password is required"),
+});
+export type Login = z.infer<typeof loginSchema>;
+
+export const loginResponseSchema = verifyCodeResponseSchema;
+export type LoginResponse = z.infer<typeof loginResponseSchema>;
+
 /** Auth policy constants — the only place these numbers live. */
 export const AUTH_POLICY = {
   codeTtlMinutes: 10,

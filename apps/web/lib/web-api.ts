@@ -1,6 +1,7 @@
 import {
   alertListItemSchema,
   err,
+  loginResponseSchema,
   ok,
   requestCodeResponseSchema,
   verifyCodeResponseSchema,
@@ -98,6 +99,29 @@ export async function verifyCode(phone: string, code: string): Promise<Result<We
   }
   if (!res.ok) return err("invalid_code", "That code didn't work. Try again.");
   const parsed = verifyCodeResponseSchema.safeParse(await res.json());
+  if (!parsed.success) return err("bad_response", "Unexpected server response.");
+  const d = parsed.data;
+  return ok({
+    token: d.token,
+    role: d.role,
+    agencyName: d.theme.agencyName,
+    primaryColor: d.theme.primaryColor,
+  });
+}
+
+export async function login(email: string, password: string): Promise<Result<WebSession>> {
+  let res: Response;
+  try {
+    res = await fetch(`${baseUrl}/api/v1/auth/login`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email, password }),
+    });
+  } catch {
+    return err("network_error", "Couldn't reach the server. Check your connection.");
+  }
+  if (!res.ok) return err("invalid_credentials", "Email or password didn't match. Try again.");
+  const parsed = loginResponseSchema.safeParse(await res.json());
   if (!parsed.success) return err("bad_response", "Unexpected server response.");
   const d = parsed.data;
   return ok({
