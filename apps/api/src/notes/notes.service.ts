@@ -4,6 +4,7 @@ import {
   Inject,
   Injectable,
   NotFoundException,
+  Optional,
 } from "@nestjs/common";
 import { and, asc, eq, visits, visitNotes, type Database } from "@repo/db";
 import {
@@ -21,7 +22,7 @@ import { z } from "zod";
 import { DB_CLIENT } from "../db/database.module.js";
 import { AuditService } from "../audit/audit.service.js";
 import type { RequestAuth } from "../tenant/tenant.guard.js";
-import { TranscriptionNotConfiguredError } from "./transcription-provider.js";
+import { TranscriptionNotConfiguredError, TRANSCRIPTION_PROVIDER, type TranscriptionProvider } from "./transcription-provider.js";
 
 /**
  * Visit notes: draft → approved → filed. The clinician structures the
@@ -33,6 +34,9 @@ export class NotesService {
   constructor(
     @Inject(DB_CLIENT) private readonly db: Database,
     private readonly audit: AuditService,
+    @Optional()
+    @Inject(TRANSCRIPTION_PROVIDER)
+    private readonly transcription: TranscriptionProvider | null,
   ) {}
 
   private requireTeam(auth: RequestAuth): void {
@@ -138,9 +142,23 @@ export class NotesService {
     return toDto(updated);
   }
 
-  /** Placeholder until a provider is configured — fails loudly, never silently. */
-  async transcribe(): Promise<never> {
-    throw new TranscriptionNotConfiguredError();
+  /**
+   * Audio → transcript via the configured provider. Fails loudly when no
+   * provider is configured — never returns a silent empty transcript.
+   */
+  async transcribe(
+    auth: RequestAuth,
+    visitId: string,
+    audio: Buffer,
+    mimeType: string,
+  ): Promise<{ transcript: string; provider: string }> {
+    this.requireTeam(auth);
+    await this.requireVisit(auth, visitId);
+    if (!this.transcription) {
+      throw new TranscriptionNotConfiguredError();
+    }
+    const transcript = await this.transcription.transcribe(audio, mimeType);
+    return { transcript, provider: this.transcription.providerName };
   }
 }
 

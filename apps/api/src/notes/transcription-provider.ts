@@ -6,6 +6,9 @@
  * provider key (e.g. Whisper, Deepgram), implement this interface and wire it
  * into NotesService.transcribe(); the note workflow below doesn't change.
  */
+/** DI token for the optional transcription provider (null when none configured). */
+export const TRANSCRIPTION_PROVIDER = Symbol("TRANSCRIPTION_PROVIDER");
+
 export interface TranscriptionProvider {
   /** Audio bytes → transcript text. */
   transcribe(audio: Buffer, mimeType: string): Promise<string>;

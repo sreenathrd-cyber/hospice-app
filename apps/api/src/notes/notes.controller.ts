@@ -1,4 +1,5 @@
-import { Body, Controller, Get, Param, Patch, Post, UseGuards } from "@nestjs/common";
+import { BadRequestException, Body, Controller, Get, Param, Patch, Post, UploadedFile, UseGuards, UseInterceptors } from "@nestjs/common";
+import { FileInterceptor } from "@nestjs/platform-express";
 import {
   createVisitNoteRequestSchema,
   updateVisitNoteRequestSchema,
@@ -28,6 +29,19 @@ export class NotesController {
   @Get("visits/:visitId/notes")
   async list(@Param("visitId") visitId: string, @CurrentAuth() auth: RequestAuth) {
     return this.notes.listNotes(auth, visitId);
+  }
+
+  @Post("visits/:visitId/notes/transcribe")
+  @UseInterceptors(FileInterceptor("audio", { limits: { fileSize: 25 * 1024 * 1024 } }))
+  async transcribe(
+    @Param("visitId") visitId: string,
+    @UploadedFile() file: { buffer: Buffer; mimetype: string; size: number } | undefined,
+    @CurrentAuth() auth: RequestAuth,
+  ) {
+    if (!file?.buffer?.length) {
+      throw new BadRequestException({ code: "missing_audio", message: "Attach an audio file as 'audio'" });
+    }
+    return this.notes.transcribe(auth, visitId, file.buffer, file.mimetype);
   }
 
   @Patch("notes/:noteId")
