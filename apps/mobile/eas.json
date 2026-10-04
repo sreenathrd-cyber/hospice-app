@@ -1,1 +1,27 @@
-{"build":{"development":{"developmentClient":true,"distribution":"internal"},"preview":{"distribution":"internal"},"production":{"autoIncrement":true}},"cli":{"version":">= 16.0.0"},"submit":{"production":{}}}
+{
+  "build": {
+    "development": {
+      "developmentClient": true,
+      "distribution": "internal"
+    },
+    "preview": {
+      "distribution": "internal"
+    },
+    "production": {
+      "autoIncrement": true
+    }
+  },
+  "cli": {
+    "version": ">= 16.0.0",
+    "appVersionSource": "remote"
+  },
+  "submit": {
+    "production": {
+      "ios": {
+        "ascApiKeyPath": "/home/hatch/.eas-keys/AuthKey_UKG3V7L86P.p8",
+        "ascApiKeyIssuerId": "22672ae4-ed47-4500-9e13-833801e295ff",
+        "ascApiKeyId": "UKG3V7L86P"
+      }
+    }
+  }
+}
