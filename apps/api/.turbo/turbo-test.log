@@ -1,0 +1,26 @@
+
+> api@0.1.0 test
+> node --import tsx --test test/**/*.test.ts
+
+▶ auth logic
+  ✔ generates 6-digit numeric codes (7.048908ms)
+  ✔ generates unique tokens (0.596866ms)
+  ✔ hashes deterministically and never returns the input (0.317938ms)
+  ✔ detects expiry against the clock (0.191538ms)
+✔ auth logic (46.205321ms)
+▶ resolveDirection
+  ✔ maps patient/caregiver to family_to_team (6.344311ms)
+  ✔ maps clinician/admin to team_to_family (0.24637ms)
+✔ resolveDirection (11.315571ms)
+▶ isValidPushToken
+  ✔ accepts Expo push tokens (0.300922ms)
+  ✔ rejects anything else — never send pushes to unvalidated endpoints (0.454092ms)
+✔ isValidPushToken (1.299911ms)
+ℹ tests 8
+ℹ suites 3
+ℹ pass 8
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 7199.74089

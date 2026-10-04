@@ -1,0 +1,1 @@
+{"compilerOptions":{"emitDecoratorMetadata":true,"experimentalDecorators":true,"module":"CommonJS","moduleResolution":"node","noEmit":false,"outDir":"dist","target":"ES2022"},"extends":"./tsconfig.base.json"}

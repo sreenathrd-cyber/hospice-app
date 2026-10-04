@@ -1,0 +1,22 @@
+
+> @repo/db@0.1.0 db:generate
+> drizzle-kit generate
+
+No config path provided, using default 'drizzle.config.ts'
+Reading config file '/home/hatch/workspace/hospice-app/packages/db/drizzle.config.ts'
+13 tables
+alerts 11 columns 0 indexes 3 fks
+audit_log 7 columns 0 indexes 2 fks
+enrollments 2 columns 0 indexes 2 fks
+messages 7 columns 0 indexes 3 fks
+patients 6 columns 0 indexes 1 fks
+questionnaire_responses 6 columns 0 indexes 2 fks
+sessions 5 columns 0 indexes 2 fks
+sia_entries 5 columns 0 indexes 1 fks
+tenants 5 columns 0 indexes 0 fks
+threads 4 columns 0 indexes 2 fks
+users 6 columns 0 indexes 1 fks
+verification_codes 5 columns 0 indexes 0 fks
+visits 7 columns 0 indexes 3 fks
+
+[✓] Your SQL migration file ➜ migrations/0001_oval_vampiro.sql 🚀

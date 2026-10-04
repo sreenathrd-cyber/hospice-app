@@ -1,0 +1,27 @@
+{
+  "dependencies": {
+    "drizzle-orm": "0.45.3",
+    "postgres": "3.4.5"
+  },
+  "devDependencies": {
+    "drizzle-kit": "0.31.11"
+  },
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "name": "@repo/db",
+  "private": true,
+  "scripts": {
+    "db:generate": "drizzle-kit generate",
+    "lint": "eslint .",
+    "typecheck": "tsc --noEmit -p tsconfig.json",
+    "build": "tsc -p tsconfig.build.json"
+  },
+  "type": "module",
+  "version": "0.1.0",
+  "types": "./dist/index.d.ts"
+}

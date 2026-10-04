@@ -1,0 +1,120 @@
+
+> @repo/types@0.1.0 test
+> node --import tsx --test test/*.test.ts
+
+▶ evaluateEsas
+  ✔ raises a red alert for a pain spike at 8/10 (8.230732ms)
+  ✔ raises a warning (not red) at 5/10 (0.310046ms)
+  ✔ raises nothing when all symptoms are mild (3.655866ms)
+  ✔ flags every severe symptom independently (0.323595ms)
+✔ evaluateEsas (42.368082ms)
+▶ evaluatePhq2Gad2
+  ✔ flags positive screens as red (1.480552ms)
+  ✔ stays quiet below threshold (0.186059ms)
+✔ evaluatePhq2Gad2 (1.887472ms)
+▶ evaluatePps
+  ✔ red at 30 and below, warning at 50 and below (0.417867ms)
+✔ evaluatePps (0.80637ms)
+▶ evaluateBowelBladder
+  ✔ flags constipation, vomiting, bladder difficulty (1.335885ms)
+  ✔ stays quiet when all clear (1.307542ms)
+✔ evaluateBowelBladder (5.506153ms)
+▶ evaluateCaregiverWellbeing
+  ✔ flags high strain as red and low support as warning (1.710356ms)
+  ✔ stays quiet for a coping caregiver (0.164437ms)
+✔ evaluateCaregiverWellbeing (2.109786ms)
+▶ evaluateResponse dispatcher
+  ✔ routes every kind to its evaluator (2.764368ms)
+  ✔ thresholds are sane constants (1.241343ms)
+✔ evaluateResponse dispatcher (4.186423ms)
+▶ auth schemas
+  ✔ accepts E.164 phone numbers (16.944368ms)
+  ✔ rejects non-E.164 phone numbers (13.343775ms)
+  ✔ accepts a 6-digit code and rejects anything else (6.526204ms)
+  ✔ parses the verify response shape (65.404433ms)
+  ✔ rejects unknown roles in the verify response (17.322175ms)
+  ✔ keeps the auth policy constants sane (14.863536ms)
+✔ auth schemas (183.169303ms)
+▶ idgReadyToRecord
+  ✔ requires every attendee consented (1.176545ms)
+✔ idgReadyToRecord (2.917999ms)
+▶ canTransitionIdg
+  ✔ moves forward only (0.312298ms)
+✔ canTransitionIdg (0.458498ms)
+▶ thread schemas
+  ✔ accepts a well-formed thread (51.847408ms)
+  ✔ rejects create-thread without a patient id (5.910069ms)
+  ✔ thread list item requires participants and counts (18.232812ms)
+✔ thread schemas (88.226472ms)
+▶ send message
+  ✔ rejects empty and over-long bodies (7.431613ms)
+  ✔ trims the body (1.580782ms)
+  ✔ messages query defaults limit to 50 and caps at 100 (11.700048ms)
+✔ send message (24.206617ms)
+▶ nowhere-PHI notification rule
+  ✔ push body never contains message content or names (0.748293ms)
+  ✔ push notification carries only the thread id in data (5.717621ms)
+  ✔ push payload variants carry no content or name fields (1.125429ms)
+  ✔ register push token requires a token (15.726641ms)
+✔ nowhere-PHI notification rule (25.77467ms)
+▶ canTransitionNote
+  ✔ moves forward only (11.499127ms)
+  ✔ rejects skips, stays, and backward moves (0.229975ms)
+✔ canTransitionNote (14.716795ms)
+▶ ESAS schema
+  ✔ accepts a valid 0–10 score set (54.915833ms)
+  ✔ rejects out-of-range and non-integer scores (45.20558ms)
+  ✔ totals the nine symptoms (0.304266ms)
+✔ ESAS schema (111.958457ms)
+▶ PPS schema
+  ✔ accepts multiples of 10 within 0–100 (9.482911ms)
+  ✔ rejects non-multiples of 10 and out-of-range values (0.376695ms)
+✔ PPS schema (10.258586ms)
+▶ PHQ-2/GAD-2 schema
+  ✔ scores the subscales correctly (7.499084ms)
+  ✔ rejects scores above 3 (0.308202ms)
+✔ PHQ-2/GAD-2 schema (8.115299ms)
+▶ questionnaire response envelope
+  ✔ parses a discriminated ESAS response (17.06576ms)
+  ✔ rejects a response whose scores do not match its kind (15.424327ms)
+✔ questionnaire response envelope (35.934548ms)
+▶ assignment schemas
+  ✔ accepts a pending assignment (30.536336ms)
+  ✔ assign request requires patient and kind; dueAt optional (20.115588ms)
+✔ assignment schemas (50.918643ms)
+▶ submit request
+  ✔ accepts a full ESAS submission (11.202883ms)
+  ✔ rejects out-of-range scores (4.882347ms)
+  ✔ rejects PPS not in steps of 10 (8.976371ms)
+✔ submit request (25.444465ms)
+▶ advanceDueDate
+  ✔ daily advances one day, weekly seven (0.248352ms)
+  ✔ create schedule request defaults startAt (0.950387ms)
+✔ advanceDueDate (1.356115ms)
+▶ SIA unit math
+  ✔ converts minutes to whole 15-minute units, rounding up (2.110958ms)
+  ✔ prices units at $17.44 each (6.277381ms)
+  ✔ enforces the 4-hour (16-unit) daily cap (0.320471ms)
+✔ SIA unit math (33.905633ms)
+▶ siaSummaryForEntries
+  ✔ groups by day and applies the 16-unit cap (216.517479ms)
+  ✔ rounds partial units up (0.47263ms)
+  ✔ empty entries give a zero summary (37.737112ms)
+  ✔ create request rejects video-visit-shaped entries and bad minutes (178.747557ms)
+✔ siaSummaryForEntries (455.069335ms)
+▶ visit schemas
+  ✔ accepts a scheduled video visit (307.125305ms)
+  ✔ rejects unknown status and type (8.121218ms)
+  ✔ schedule request allows omitting clinicianId (defaults to caller) (0.354662ms)
+  ✔ list item requires resolved names (12.411056ms)
+  ✔ join response requires room, token, and join URL (5.497621ms)
+  ✔ visits query patientId is optional (5.600154ms)
+✔ visit schemas (344.366543ms)
+ℹ tests 62
+ℹ suites 23
+ℹ pass 62
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 46764.540229

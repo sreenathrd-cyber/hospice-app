@@ -1,0 +1,1 @@
+{"compilerOptions":{"allowJs":true,"customConditions":["react-native"],"jsx":"react-jsx","lib":["DOM","ESNext"],"module":"preserve","moduleDetection":"force","target":"ESNext"},"extends":"@repo/config/tsconfig.base.json","include":["app","lib","app.config.ts"]}

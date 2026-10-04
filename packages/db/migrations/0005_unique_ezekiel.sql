@@ -1,0 +1,2 @@
+ALTER TABLE "sia_entries" ADD COLUMN "tenant_id" uuid NOT NULL;--> statement-breakpoint
+ALTER TABLE "sia_entries" ADD CONSTRAINT "sia_entries_tenant_id_tenants_id_fk" FOREIGN KEY ("tenant_id") REFERENCES "public"."tenants"("id") ON DELETE no action ON UPDATE no action;

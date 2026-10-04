@@ -1,0 +1,29 @@
+{
+  "dependencies": {
+    "@nestjs/common": "12.1.2",
+    "@nestjs/core": "12.1.2",
+    "@nestjs/platform-express": "12.1.2",
+    "@nestjs/schedule": "^12.0.2",
+    "@repo/db": "0.1.0",
+    "@repo/types": "0.1.0",
+    "dotenv": "^18.0.5",
+    "reflect-metadata": "0.2.2",
+    "rxjs": "7.8.2",
+    "zod": "4.6.5"
+  },
+  "devDependencies": {
+    "tsx": "4.20.6"
+  },
+  "name": "api",
+  "private": true,
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json",
+    "dev": "tsx watch src/main.ts",
+    "lint": "eslint .",
+    "start": "node dist/main.js",
+    "typecheck": "tsc --noEmit -p tsconfig.json",
+    "test": "node --import tsx --test test/**/*.test.ts",
+    "seed": "tsx src/seed.ts"
+  },
+  "version": "0.1.0"
+}

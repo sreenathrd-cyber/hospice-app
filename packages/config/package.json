@@ -1,0 +1,1 @@
+{"exports":{".":"./tsconfig.base.json","./eslint":"./eslint.base.mjs","./nestjs":"./tsconfig.nestjs.json","./tsconfig.base.json":"./tsconfig.base.json"},"name":"@repo/config","private":true,"type":"module","version":"0.1.0"}

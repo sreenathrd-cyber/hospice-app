@@ -1,0 +1,2 @@
+ALTER TABLE "questionnaire_assignments" ADD COLUMN "schedule_id" uuid;--> statement-breakpoint
+ALTER TABLE "questionnaire_assignments" ADD CONSTRAINT "questionnaire_assignments_schedule_id_questionnaire_schedules_id_fk" FOREIGN KEY ("schedule_id") REFERENCES "public"."questionnaire_schedules"("id") ON DELETE no action ON UPDATE no action;
